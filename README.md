@@ -12,8 +12,6 @@ Then run it with the .NET 10 SDK:
 dotnet run --project src/eShopLite.StoreFx
 ```
 
-The app listens on http://localhost:54775.
-
 # 🔑 Demo logins
 
 The lab applications ship with seeded accounts. Whenever a module tells you to sign in, these are the credentials.
