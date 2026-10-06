@@ -1,0 +1,31 @@
+@using eShopLite.StoreFx.Models
+@model Product
+@{
+  ViewBag.Title = Model.Name;
+}
+<main aria-labelledby="title">
+  <p>@Html.ActionLink("\u2190 Back to products", "Products", "Home")</p>
+
+  <div class="row">
+    @* Only the impersonal part of the page is cached. The surrounding view keeps the
+       greeting, cart badge and antiforgery token out of the cache entry. *@
+    <cache expires-after="@TimeSpan.FromSeconds(300)" vary-by="@Model.Id.ToString()">
+      <partial name="_ProductDetails" model="Model" />
+    </cache>
+  </div>
+
+  <div class="row">
+    <div class="col-md-7 offset-md-5">
+      @using (Html.BeginForm("Add", "Cart", FormMethod.Post, new { @class = "d-flex gap-2 align-items-center" }))
+      {
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="productId" value="@Model.Id" />
+        <input type="hidden" name="returnUrl" value="@(Context.Request.PathBase + Context.Request.Path + Context.Request.QueryString)" />
+        <label class="visually-hidden" for="qty">Quantity</label>
+        <input type="number" id="qty" name="quantity" value="1" min="1"
+               class="form-control" style="width: 6rem;" />
+        <button type="submit" class="btn btn-primary">Add to cart</button>
+      }
+    </div>
+  </div>
+</main>
